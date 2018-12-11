@@ -1,0 +1,335 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "SubscriptionId":{
+            "type": "string",
+            "metadata": {
+                "description":"Subscription Id of the Azure Subscription"
+
+            }
+
+        },
+        "ResourceGroup":{
+            "type": "string",
+            "metadata": {
+                "description":"Resource Group Name for deploying the applications"
+            }
+        },
+        "Location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "AzureLoginID":{
+            "type": "string",
+            "metadata": {
+                "description": "UserName of the Subscription"
+            }
+        },
+        "AzurePassword": { 
+        "type": "securestring",
+        "metadata": {
+            "description": "Password of the Subscription"
+            }
+        },
+        "StorageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS",
+                "Premium_LRS"
+            ],
+
+            "metadata": {
+
+                "description": "Storage Account type"
+
+            }
+
+        }
+
+    },
+
+    "variables": {
+
+        "AdminUsername":"vmadmin",
+
+        "AdminPassword":"keepcalm@123",
+
+        "PublicIP":"myPublicIPAddress",
+        "vNet":"myVNet",
+        "Nic":"myNic",  
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks','myVNet')]",
+        "subnetRef": "[concat(variables('vnetID'),'/subnets/mySubnet')]",
+        "StorageAccountName": "[concat('mystrg',uniquestring(resourceGroup().id))]",
+        "RgName":"[resourceGroup().name]",
+        "vName" : "myVM",
+    },
+    "resources": [
+
+        {
+
+            "type": "Microsoft.Storage/storageAccounts",
+
+            "name": "[variables('StorageAccountName')]",
+
+            "apiVersion": "2016-01-01",
+
+            "location": "[parameters('Location')]",
+
+            "sku": {
+
+              "name": "[parameters('StorageAccountType')]"
+
+            },
+
+            "kind": "Storage",
+
+            "properties": {}
+
+        },
+
+        {
+
+            "apiVersion": "2016-03-30",
+
+            "type": "Microsoft.Network/publicIPAddresses",
+
+            "name": "[variables('PublicIP')]",
+
+            "location": "[parameters('Location')]",
+
+            "properties": {
+
+                "publicIPAllocationMethod": "Dynamic",
+
+                "dnsSettings": {
+
+                    "domainNameLabel": "[variables('dnsname')]"
+
+                }
+
+            }
+
+        },
+
+        {
+
+            "apiVersion": "2016-03-30",
+
+            "type": "Microsoft.Network/virtualNetworks",
+
+            "name": "[variables('vNet')]",
+
+            "location": "[parameters('Location')]",
+
+            "properties": {
+
+            "addressSpace": { "addressPrefixes": [ "10.0.0.0/16" ] },
+
+            "subnets": [
+
+                {
+
+                "name": "mySubnet",
+
+                "properties": { "addressPrefix": "10.0.0.0/24" }
+
+                }
+
+            ]
+
+            }
+
+        },
+
+        {
+
+            "apiVersion": "2016-03-30",
+
+            "type": "Microsoft.Network/networkInterfaces",
+
+            "name": "[variables('Nic')]",
+
+            "location": "[parameters('Location')]",
+
+            "dependsOn": [
+
+            "[resourceId('Microsoft.Network/publicIPAddresses/', variables('PublicIP'))]",
+
+            "[variables('vnetID')]"
+
+            ],
+
+            "properties": {
+
+                "ipConfigurations": [
+
+                    {
+
+                        "name": "ipconfig1",
+
+                        "properties": {
+
+                            "privateIPAllocationMethod": "Dynamic",
+
+                            "publicIPAddress": { "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('PublicIP'))]" },
+
+                            "subnet": { "id": "[variables('subnetRef')]" }
+
+                        }
+
+                    }
+
+                ]
+
+            }
+
+        },
+
+        {
+
+            "apiVersion": "2016-04-30-preview",
+
+            "type": "Microsoft.Compute/virtualMachines",
+
+            "name": "[variables('vName')]",
+
+            "location": "[parameters('Location')]",
+
+            "dependsOn": [
+
+                "[resourceId('Microsoft.Network/networkInterfaces/', variables('Nic'))]"
+
+            ],
+
+            "properties": {
+
+                "hardwareProfile": { 
+
+                    "vmSize": "Standard_A2"
+
+                },
+
+                "osProfile": {
+
+                    "computerName": "[variables('vName')]",
+
+                    "adminUsername": "[variables('AdminUsername')]",
+
+                    "adminPassword": "[variables('AdminPassword')]"
+
+                },
+
+                "storageProfile": {
+
+                    "imageReference": {
+
+                        "publisher": "MicrosoftWindowsServer",
+
+                        "offer": "WindowsServer",
+
+                        "sku": "2016-DataCenter",
+
+                        "version": "latest"
+
+                    },
+
+                    "osDisk": {
+
+                        "name": "myManagedOSDisk",
+
+                        "caching": "ReadWrite",
+
+                        "createOption": "FromImage"
+
+                    }
+
+                },
+
+                "networkProfile": {
+
+                    "networkInterfaces": [
+
+                        {
+
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('Nic'))]"
+
+                        }
+
+                    ]
+
+                },
+
+                "diagnosticsProfile": {
+
+                    "bootDiagnostics": {
+
+                        "enabled":true,
+
+                        "storageUri": "[reference(variables('StorageAccountName'), '2016-01-01').primaryEndpoints.blob]"
+
+                    }
+
+                }
+
+            },
+
+            "resources": [
+
+                {
+
+                    "type": "extensions",
+
+                    "name": "CustomScriptExtension",
+
+                    "apiVersion": "2016-04-30-preview",
+
+                    "location": "[resourceGroup().location]",
+
+                    "properties": {
+
+                        "publisher": "Microsoft.Compute",
+
+                        "type": "CustomScriptExtension",
+
+                        "typeHandlerVersion": "1.8",
+
+                        "autoUpgradeMinorVersion": true,
+
+                        "settings": {
+
+                            "fileUris": [
+
+                                "https://raw.githubusercontent.com/phanikumarsharma/sysprepandimagescript/master/Scripts/downloadfile.ps1"
+
+                            ],
+
+                            "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File downloadfile.ps1')]"
+
+                        }
+
+                    },
+
+                    "dependsOn": [
+
+                        "[variables('vName')]"
+
+                    ]
+
+                }
+
+            ]
+
+        }
+
+        
+
+    ]
+
+}
