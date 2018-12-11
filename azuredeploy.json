@@ -69,6 +69,7 @@
         "StorageAccountName": "[concat('mystrg',uniquestring(resourceGroup().id))]",
         "RgName":"[resourceGroup().name]",
         "vName" : "myVM",
+        "dnsname": "[concat('mydns',uniquestring(resourceGroup().id))]"
     },
     "resources": [
 
@@ -110,7 +111,7 @@
 
                 "dnsSettings": {
 
-                    "domainNameLabel": "test"
+                    "domainNameLabel": "variables('dnsname')"
 
                 }
 
