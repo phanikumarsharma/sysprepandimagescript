@@ -110,7 +110,7 @@
 
                 "dnsSettings": {
 
-                    "domainNameLabel": "[variables('dnsname')]"
+                    "domainNameLabel": "test"
 
                 }
 
