@@ -4,6 +4,6 @@ Import-Module BitsTransfer
 Start-BitsTransfer -Source $url -Destination $output
 #to extract the ODT tool
 Start-Process -FilePath "C:\Program Files\odt.exe" -ArgumentList '/extract:"C:\Program Files\O365" /quiet'
-Start-Sleep -s 10
-Start-Process -FilePath "C:\Program Files\O365\setup.exe" -ArgumentList '/configure "C:\Program Files\O365\configuration-Office365-x64.xml"'
+Start-Job -ScriptBlock { Start-Process -FilePath "D:\PhaniKumar\O365\setup.exe" -ArgumentList '/configure "D:\PhaniKumar\O365\configuration-Office365-x64.xml" /quiet'}
+#Start-Process -FilePath "C:\Program Files\O365\setup.exe" -ArgumentList '/configure "C:\Program Files\O365\configuration-Office365-x64.xml"'
 
