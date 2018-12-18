@@ -1,6 +1,7 @@
 <#Set-Location "E:\"
 Invoke-Expression -Command "cmd.exe /c .\Setup.exe /configure D:\O365\configuration-Office365-x64.xml"
 #>
+<#
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 $url = "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_11107-33602.exe"
 $output = "D:\odt.exe"
