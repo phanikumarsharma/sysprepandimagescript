@@ -5,7 +5,7 @@ Start-BitsTransfer -Source $url -Destination $output
 #to extract the ODT tool
 Start-Process -FilePath "D:/office.iso" -ArgumentList '/extract:"D:/Office" /quiet'
 
-Set-Location "E:\"
+Set-Location "F:\"
 #Invoke-Expression -Command "cmd.exe /c '.\setup.exe' /download 'D:/Office/configuration-Office365-x64.xml'" 
 Invoke-Expression -Command "cmd.exe /c .\Setup.exe /configure D:\O365\configuration-Office365-x64.xml"
 
