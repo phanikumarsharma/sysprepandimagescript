@@ -4,5 +4,5 @@ Import-Module BitsTransfer
 Start-BitsTransfer -Source $url -Destination $output
 Start-Process -FilePath "D:\office.iso" -ArgumentList '/extract:"D:/Office2019" /quiet'
 Set-Location "E:\"
-Invoke-Expression -Command "cmd.exe /c '.\setup.exe'" 
+Start-Process -FilePath ".\Setup.exe"
 
