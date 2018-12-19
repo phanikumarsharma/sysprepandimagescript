@@ -2,6 +2,7 @@ $url = "https://unmstrgaccnt9.blob.core.windows.net/iso/en_office_professional_p
 $output = "D:/office.iso"
 Import-Module BitsTransfer
 Start-BitsTransfer -Source $url -Destination $output
-Start-Process -FilePath "D:\Office\office.iso" -ArgumentList '/extract:"D:/Office2019" /quiet'
+Start-Process -FilePath "D:\office.iso" -ArgumentList '/extract:"D:/Office2019" /quiet'
 Set-Location "E:\"
-Invoke-Expression -Command "cmd.exe /c '.\setup.exe' /download 'D:\Office\configuration-Office365-x64.xml'" 
+Invoke-Expression -Command "cmd.exe /c '.\setup.exe'" 
+
