@@ -3,6 +3,6 @@ $output = "C:/office.iso"
 Import-Module BitsTransfer
 Start-BitsTransfer -Source $url -Destination $output
 Start-Process -FilePath "C:\office.iso" -ArgumentList '/extract:"C:\Office2019" /quiet'
-Set-Location "E:\"
+Set-Location "E:/"
 Start-Process -FilePath ".\Setup.exe"
 
