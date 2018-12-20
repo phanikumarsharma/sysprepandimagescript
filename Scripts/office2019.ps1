@@ -4,5 +4,6 @@ Import-Module BitsTransfer
 Start-BitsTransfer -Source $url -Destination $output
 Start-Process -FilePath "C:\office.iso" -ArgumentList '/extract:"E:\" /quiet'
 Set-Location "E:\"
-Start-Process -FilePath "E:\Setup.exe"
+#Start-Process -FilePath "E:/Setup.exe"
+Invoke-Expression -Command "cmd.exe /c '.\setup.exe'" 
 
