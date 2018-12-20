@@ -2,7 +2,7 @@ $url = "https://unmstrgaccnt9.blob.core.windows.net/iso/en_office_professional_p
 $output = "C:/office.iso"
 Import-Module BitsTransfer
 Start-BitsTransfer -Source $url -Destination $output
-Start-Process -FilePath "C:\office.iso" -ArgumentList '/extract:"C:/Office2019" /quiet'
+Start-Process -FilePath "C:\office.iso" -ArgumentList '/extract:"C:\Office2019" /quiet'
 Set-Location "E:\"
 Start-Process -FilePath ".\Setup.exe"
 
