@@ -3,7 +3,7 @@ $output = "C:\office.iso"
 Import-Module BitsTransfer
 Start-BitsTransfer -Source $url -Destination $output
 Start-Process -FilePath "C:\office.iso" -ArgumentList '/extract:"E:\" /quiet'
-Start-Sleep -Seconds 10
+Start-Sleep -Seconds 5
 Set-Location "E:\Office"
 Start-Process -FilePath ".\Setup64.exe"
 
