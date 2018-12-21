@@ -2,8 +2,7 @@ $url = "https://office19rgdisks.blob.core.windows.net/office19-iso/en_office_pro
 $output = "C:\office.iso"
 Import-Module BitsTransfer
 Start-BitsTransfer -Source $url -Destination $output
-Start-Process -FilePath "C:\office.iso" -ArgumentList '/extract:"E:\" /quiet'
-Start-Sleep -Seconds 5
+Mount-DiskImage -ImagePath "C:\office.iso"
 Set-Location "E:\Office"
 Start-Process -FilePath ".\Setup64.exe"
 
