@@ -13,8 +13,9 @@ Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\c
 }
 office365Installation
 #>
-function RunSysprep{
+Set-Location "C:/"
 param([switch]$runSysprep=$false)
+function RunSysprep{
 write-output "Sysprep Script Run, parameter 'runSysprep': $runSysprep"
 if($runSysprep){
   write-output "starting the Sysprep"
