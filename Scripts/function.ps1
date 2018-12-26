@@ -1,4 +1,3 @@
-param([switch]$runSysprep=$false)
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 function office365Installation{
 $url = "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_11107-33602.exe"
@@ -15,6 +14,7 @@ Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\c
 
 office365Installation
 
+param([switch]$runSysprep=$false)
 function RunSysprep{
 if($runSysprep){
   write-output "starting the Sysprep"
