@@ -11,7 +11,6 @@ Invoke-Expression -Command "cmd.exe /c '.\setup.exe' /download 'D:\O365\configur
 Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\configuration-Office365-x64.xml'" 
 }
 office365Installation
-<#
 param([switch]$runSysprep=$false)
 function RunSysprep{
 if($runSysprep){
@@ -22,6 +21,5 @@ if($runSysprep){
   write-output "skipping the Sysprep"
 }
 }
-
 RunSysprep
-#>
+
