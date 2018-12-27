@@ -11,16 +11,8 @@ Invoke-Expression -Command "cmd.exe /c '.\setup.exe' /download 'D:\O365\configur
 Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\configuration-Office365-x64.xml'" 
 }
 Wait-Job -Name Job1
-param([switch]$runSysprep=$false)
-write-output "Sysprep Script Run, parameter 'runSysprep': $runSysprep"
-Start-Sleep -Seconds 30
-if($runSysprep){
-  write-output "starting the Sysprep"
-  Start-Process -FilePath C:\Windows\System32\Sysprep\Sysprep.exe -ArgumentList '/generalize /oobe /shutdown /quiet'
-  write-output "started Sysprep"
-}else{
-  write-output "skipping the Sysprep"
-}
+Start-Process -FilePath C:\Windows\System32\Sysprep\Sysprep.exe -ArgumentList '/generalize /oobe /shutdown /quiet'
+
 
 
 
