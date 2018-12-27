@@ -11,8 +11,8 @@ Invoke-Expression -Command "cmd.exe /c '.\setup.exe' /download 'D:\O365\configur
 Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\configuration-Office365-x64.xml'" 
 }
 Wait-Job -Name Job1
-Start-Process -FilePath C:\Windows\System32\Sysprep\Sysprep.exe -ArgumentList '/generalize /oobe /shutdown /quiet'
-
+Start-Job -Name Job2 -ScriptBlock {Start-Process -FilePath C:\Windows\System32\Sysprep\Sysprep.exe -ArgumentList '/generalize /oobe /shutdown /quiet'}
+Wait-Job -Name Job2
 
 
 
