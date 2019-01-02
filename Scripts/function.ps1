@@ -12,6 +12,17 @@ Invoke-Expression -Command "cmd.exe /c '.\setup.exe' /download 'C:\O365\configur
 Invoke-Expression -Command "cmd.exe /c 'C:\O365\setup.exe' /configure 'C:\O365\configuration-Office365-x64.xml'" 
 }
 Out-Null | office365Installation
+function second
+{
+$checkinstalled=Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -eq "Microsoft Office 365 ProPlus - en-us"}
+if($checkinstalled)
+{
+Write-Host "yes its there and this command execuites after installation of O365"
+}
+}
+second
+
+<#
 function sysprep
 {
 $checkinstalled = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -eq "Microsoft Office 365 ProPlus - en-us"} | Select-Object DisplayName
@@ -21,4 +32,4 @@ Start-Process -FilePath C:\Windows\System32\Sysprep\Sysprep.exe -ArgumentList '/
 }
 }
 sysprep
-
+#>
