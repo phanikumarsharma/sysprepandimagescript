@@ -17,10 +17,9 @@ function sysprep
 {
 $checkinstalled=Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -eq "Microsoft Office 365 ProPlus - en-us"}
 if($checkinstalled)
-{
-
+  {
   Start-Process -FilePath C:\Windows\System32\Sysprep\Sysprep.exe -ArgumentList '/generalize /oobe /shutdown /quiet'
-}
+  }
 }
 Out-Null | sysprep
 <#
