@@ -11,7 +11,7 @@ Set-Location "C:\O365"
 Invoke-Expression -Command "cmd.exe /c '.\setup.exe' /download 'C:\O365\configuration-Office365-x64.xml'" 
 Invoke-Expression -Command "cmd.exe /c 'C:\O365\setup.exe' /configure 'C:\O365\configuration-Office365-x64.xml'" 
 }
-Start-Process office365Installation | Wait
+Out-Null | office365Installation
 function sysprep
 {
 $checkinstalled = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -eq "Microsoft Office 365 ProPlus - en-us"} | Select-Object DisplayName
@@ -20,5 +20,5 @@ if($checkinstalled)
 Start-Process -FilePath C:\Windows\System32\Sysprep\Sysprep.exe -ArgumentList '/generalize /oobe /shutdown /quiet'
 }
 }
-Start-Process sysprep
+sysprep
 
