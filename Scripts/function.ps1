@@ -14,6 +14,7 @@ Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /download 'D:\O365\co
 Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\configuration-Office365-x64.xml'" 
 }
 Out-Null | O365
+<#
 function sysprep
 {
 $checkinstalled=Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object {$_.DisplayName -eq "Microsoft Office 365 ProPlus - en-us"}
@@ -23,6 +24,7 @@ if($checkinstalled)
   }
 }
 Out-Null | sysprep
+#>
 <#
 function office365Installation
 {
