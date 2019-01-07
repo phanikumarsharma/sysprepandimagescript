@@ -14,6 +14,9 @@ Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /download 'D:\O365\co
 Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\configuration-Office365-x64.xml'" 
 }
 Out-Null | O365
+Enable-PSRemoting
+New-NetFirewallRule -Name "winrm_https" -DisplayName "winrm_https" -Enabled True -Profile Any -Action Allow -Direction Inbound -LocalPort 5986 -Protocol TCP
+
 <#
 function sysprep
 {
