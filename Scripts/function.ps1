@@ -1,5 +1,5 @@
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
-    $dnsName=$env:Computername
+    $dnsName= $env:Computername
     Enable-PSRemoting
     $Cert = New-SelfSignedCertificate -CertstoreLocation Cert:\LocalMachine\My -DnsName $dnsName
     Export-Certificate -Cert $Cert -FilePath 'C:\exch.cer'
