@@ -15,7 +15,11 @@ Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\c
 }
 Out-Null | O365
 
-$dnsName
+Param(
+    [Parameter(Mandatory = $False)]
+    [ValidateNotNullOrEmpty()]
+    [string] $dnsName
+)
 Enable-PSRemoting
 $Cert = New-SelfSignedCertificate -CertstoreLocation Cert:\LocalMachine\My -DnsName $dnsName
 Export-Certificate -Cert $Cert -FilePath 'C:\exch.cer'
