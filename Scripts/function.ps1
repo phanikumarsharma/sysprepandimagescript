@@ -3,11 +3,11 @@ Param(
 
     [Parameter(Mandatory = $True)]
     [ValidateNotNullOrEmpty()]
-    [string] $azureLoginId,
+    [string] $UserName,
 
     [Parameter(Mandatory = $True)]
     [ValidateNotNullOrEmpty()]
-    [string] $azureLoginPassword,
+    [string] $Password,
     
     [Parameter(Mandatory = $True)]
     [ValidateNotNullOrEmpty()]
@@ -62,7 +62,7 @@ Param(
     # Select the AzureRM Subscription
 
     Write-Output "Selecting Azure Subscription.."
-    Select-AzureRmSubscription -SubscriptionId $SubscriptionId
+    Select-AzureRmSubscription -SubscriptionId $subscriptionId
     $rg = Get-AzureRmResourceGroup -Name $resourceGroup
     $vm = Get-AzureRmVM -ResourceGroupName $rg.ResourceGroupName -Name $vmName
     $nic = Get-AzureRmNetworkInterface -ResourceGroupName $rg.ResourceGroupName -Name $(Split-Path -Leaf $VM.NetworkProfile.NetworkInterfaces[0].Id)
