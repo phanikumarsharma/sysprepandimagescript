@@ -1,82 +1,11 @@
-
-Param( 
-
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $UserName,
-
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $Password,
-    
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $subscriptionId,
-    
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $resourceGroup,
-
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $location,
-
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $vmName
-    )
-    
-    # Install AzureRM Module   
-        
-    Write-Output "Checking if AzureRm module is installed.."
-    $azureRmModule = Get-Module AzureRM -ListAvailable | Select-Object -Property Name -ErrorAction SilentlyContinue
-    if (!$azureRmModule.Name) 
-    {
-        Write-Output "AzureRM module Not Available. Installing AzureRM Module"
-        Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-        Install-Module Azure -Force
-        Install-Module AzureRm -Force 
-        Write-Output "Installed AzureRM Module successfully"
-    } 
-    else
-    {
-        Write-Output "AzureRM Module Available"
-    }
-
-    # Import AzureRM Module
-
-    Write-Output "Importing AzureRm Module.."
-    Import-Module AzureRm -ErrorAction SilentlyContinue -Force
-    Import-Module AzureRM.profile
-    Import-Module AzureRM.resources
-    Import-Module AzureRM.Compute
-
-    # Login to AzureRM Account
-
-    Write-Output "Login Into Azure RM.."
-    
-    $Psswd = $Password | ConvertTo-SecureString -asPlainText -Force
-    $Credential = New-Object System.Management.Automation.PSCredential($UserName,$Psswd)
-    Login-AzureRmAccount -Credential $Credential
-
-    # Select the AzureRM Subscription
-
-    Write-Output "Selecting Azure Subscription.."
-    Select-AzureRmSubscription -SubscriptionId $subscriptionId
-    $rg = Get-AzureRmResourceGroup -Name $resourceGroup
-    $vm = Get-AzureRmVM -ResourceGroupName $rg.ResourceGroupName -Name $vmName
-    $nic = Get-AzureRmNetworkInterface -ResourceGroupName $rg.ResourceGroupName -Name $(Split-Path -Leaf $VM.NetworkProfile.NetworkInterfaces[0].Id)
-    $nic | Get-AzureRmNetworkInterfaceIpConfig | Select-Object @{'label'='DNS name';Expression={Set-Variable -name DNS -scope Global -value $(Split-Path -leaf $_.PublicIpAddress.Id);$dns}}
-    $dnsName=(Get-AzureRmPublicIpAddress -ResourceGroupName $rg.ResourceGroupName -Name $dns).DnsSettings.Fqdn
-    
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+    $dnsName=$env:Computername
     Enable-PSRemoting
     $Cert = New-SelfSignedCertificate -CertstoreLocation Cert:\LocalMachine\My -DnsName $dnsName
     Export-Certificate -Cert $Cert -FilePath 'C:\exch.cer'
     New-Item -Path "WSMan:\LocalHost\Listener" -Transport HTTPS -Address * -CertificateThumbPrint $Cert.Thumbprint -Force
     New-NetFirewallRule -Name "winrm_https" -DisplayName "winrm_https" -Enabled True -Profile Any -Action Allow -Direction Inbound -LocalPort 5986 -Protocol TCP
-
     # Install O365
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
     function O365
     {
     $url = "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_11107-33602.exe"
