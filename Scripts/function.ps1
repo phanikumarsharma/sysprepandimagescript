@@ -1,3 +1,14 @@
+    <#
+    
+    .Synposys
+    Install O365 and Enable WinRm
+    
+    .Description
+    This script is used to install the Office 365 and to enable the WinRm.
+    
+    .Permission
+    Administrator
+    #>
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
     $dnsName= $env:Computername
     Enable-PSRemoting
