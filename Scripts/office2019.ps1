@@ -3,7 +3,6 @@ $output = "C:\office.iso"
 Import-Module BitsTransfer
 Start-BitsTransfer -Source $url -Destination $output
 Mount-DiskImage -ImagePath "C:\office.iso"
-Set-Location "E:\Office"
-Start-Process -FilePath ".\Setup64.exe"
+
 
 
