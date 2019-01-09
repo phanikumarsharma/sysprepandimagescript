@@ -6,10 +6,10 @@
     Start-BitsTransfer -Source $url -Destination $output
     #to extract the ODT tool
     New-Item -Path "D:\Office2019" -ItemType Directory -Force -ErrorAction SilentlyContinue
-    Start-Process -FilePath "D:/odt.exe" -ArgumentList '/extract:"D:/Office2019" /quiet'
+    Start-Process -FilePath "D:/odt.exe" -ArgumentList '/extract:"D:/O365" /quiet'
     Start-Sleep -Seconds 15
-    Set-Location "D:\Office2019"
-    Invoke-Expression -Command "cmd.exe /c 'D:\Office2019\setup.exe' /download 'D:\Office2019\configuration-Office2019Enterprise.xml'" 
-    Invoke-Expression -Command "cmd.exe /c 'D:\Office2019\setup.exe' /configure 'D:\Office2019\configuration-Office2019Enterprise.xml'" 
+    Set-Location "D:\O365"
+    Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /download 'D:\O365\configuration-Office365-x64.xml'" 
+    Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\configuration-Office365-x64.xml'" 
     }
     Out-Null | O365
