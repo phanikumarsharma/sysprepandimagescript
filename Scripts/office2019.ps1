@@ -31,4 +31,4 @@
     Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /download 'D:\Office2019\configuration-Office365-x64.xml'" 
     Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\Office2019\configuration-Office365-x64.xml'" 
     }
-    Out-Null | O365
+    Out-Null | Office2019
