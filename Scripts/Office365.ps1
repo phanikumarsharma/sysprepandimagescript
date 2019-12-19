@@ -9,7 +9,7 @@
     .Permission
     Administrator
     #>
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+    #Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
     <#
     $dnsName= (Get-WmiObject win32_computersystem).DNSHostName+"."+(Get-WmiObject win32_computersystem).Domain
     Enable-PSRemoting
