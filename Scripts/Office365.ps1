@@ -10,12 +10,14 @@
     Administrator
     #>
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+    <#
     $dnsName= (Get-WmiObject win32_computersystem).DNSHostName+"."+(Get-WmiObject win32_computersystem).Domain
     Enable-PSRemoting
     $Cert = New-SelfSignedCertificate -CertstoreLocation Cert:\LocalMachine\My -DnsName $dnsName
     Export-Certificate -Cert $Cert -FilePath 'C:\exch.cer'
     New-Item -Path "WSMan:\LocalHost\Listener" -Transport HTTPS -Address * -CertificateThumbPrint $Cert.Thumbprint -Force
     New-NetFirewallRule -Name "winrm_https" -DisplayName "winrm_https" -Enabled True -Profile Any -Action Allow -Direction Inbound -LocalPort 5986 -Protocol TCP
+    #>
     # Install O365
     function O365
     {
