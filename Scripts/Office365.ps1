@@ -1,3 +1,18 @@
+    #Create temp folder
+    New-Item -Path 'C:\temp' -ItemType Directory -Force | Out-Null
+    
+    $url = "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12130-20272.exe"
+    $output = 'C:\temp'
+    Import-Module BitsTransfer
+    Start-BitsTransfer -Source $url -Destination $output
+    #to extract the ODT tool
+    New-Item -Path "C:\temp\O365" -ItemType Directory -Force -ErrorAction SilentlyContinue
+    Start-Process -FilePath "C:\temp\O365\odt.exe" -ArgumentList '/extract:"C:\temp\O365" /quiet'
+    Start-Sleep -Seconds 15
+    Set-Location "C:\temp\O365"
+    Invoke-Expression -Command "cmd.exe /c 'C:\temp\O365\setup.exe' /download 'C:\temp\O365\configuration-Office365-x64.xml'" 
+    Invoke-Expression -Command "cmd.exe /c 'C:\temp\O365\setup.exe' /configure 'C:\temp\O365\configuration-Office365-x64.xml'" 
+    
     <#
     
     .Synposys
@@ -19,7 +34,7 @@
     New-NetFirewallRule -Name "winrm_https" -DisplayName "winrm_https" -Enabled True -Profile Any -Action Allow -Direction Inbound -LocalPort 5986 -Protocol TCP
     #>
     # Install O365
-    function O365
+    <#function O365
     {
     $url = "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_11107-33602.exe"
     $output = "D:/odt.exe"
@@ -33,7 +48,7 @@
     Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /download 'D:\O365\configuration-Office365-x64.xml'" 
     Invoke-Expression -Command "cmd.exe /c 'D:\O365\setup.exe' /configure 'D:\O365\configuration-Office365-x64.xml'" 
     }
-    Out-Null | O365
+    Out-Null | O365#>
     <#
     Enable-PSRemoting
     $Cert = New-SelfSignedCertificate -CertstoreLocation Cert:\LocalMachine\My -DnsName $dnsName
